@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  .column
+      h2
+       | Log in
+      form.form(id="signinForm" action="singin" method="post" )
+          input(type="text" name="userName" placeholder="User name")
+          input(type="text" name="userName" placeholder="User name")
+      div
+        button(for="signinForm" type="submit" class="btn--blue") Log in
+      div
+        a(href="login/singup" class=".my2") Sign Up
+        .ui.error.message

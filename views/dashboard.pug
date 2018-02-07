@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1 Dashboard
+  h2 Welcome #{user._firstName} #{user._secondName}
+  div
+    img(src="./images/" + user._profileImg, alt="Profile pic" height="100" width="100")
+  div
+    a(href="/login/logout" class="w100--s my1 btn--red") Log out

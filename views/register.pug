@@ -1,0 +1,45 @@
+extends layout
+
+block content
+  h1 Register
+  a(href="/login") Go to login page
+  .column
+      h3.ui.teal.image.header
+        .content
+          | Create Account
+      form.ui.large.form(id="signForm" action="singup" method="post" enctype="multipart/form-data" )
+        .ui.stacked.segment
+          .field
+              if formErrors
+                label(for="userName" class="fnt--red") #{formErrors.get("userName")}
+              input(type="text" name="userName" placeholder="User name")
+          .field
+              if formErrors
+                label(for="password" class="fnt--red") #{formErrors.get("password")}
+              input(type="text" name="password" placeholder="Password")
+          .field
+              if formErrors
+                label(for="email" class="fnt--red") #{formErrors.get("email")}
+              input(type="text" name="email" placeholder="E-mail address")
+          .field
+              if formErrors
+                label(for="first_name" class="fnt--red") #{formErrors.get("first_name")}
+              input(type="text" name="first_name" placeholder="First name")
+          .field
+              if formErrors
+                label(for="second_name" class="fnt--red") #{formErrors.get("second_name")}
+              input(type="text" name="second_name" placeholder="Second name")
+          .field
+              if formErrors
+                label(for="phone" class="fnt--red") #{formErrors.get("phone")}
+              input(type="tel" name="phone" placeholder="Phone Number")
+          .field
+              if formErrors
+                label(for="img_profile" class="fnt--red") #{formErrors.get("img_profile")}
+              input(type="file" name="img_profile" placeholder="Profile Image")
+          .field
+              if formErrors
+                label(for="zip_code" class="fnt--red") #{formErrors.get("zip_code")}
+              input(type="text" name="zip_code" placeholder="Zip code")
+          div
+            button(for="signForm" type="submit") Sign Up
