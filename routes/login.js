@@ -64,6 +64,7 @@ router.post('/singup', function (req, res, next) {
             }));
         }
         catch (error) {
+            console.log(error);
             req.app.set("form_errors", error);
             res.redirect("singup");
         }
