@@ -1,6 +1,8 @@
 extends layout
 
 block content
+  if errors.systemErrors
+    div #{errors.systemErrors}
   h1 Register
   a(href="/login") Go to login page
   .column
@@ -10,36 +12,44 @@ block content
       form.ui.large.form(id="signForm" action="singup" method="post" enctype="multipart/form-data" )
         .ui.stacked.segment
           .field
-              if formErrors
-                label(for="userName" class="fnt--red") #{formErrors.get("userName")}
+              if errors.formErrors
+                if errors.formErrors.get("userName")
+                  label(for="userName" class="fnt--red") #{errors.formErrors.get("userName")}
               input(type="text" name="userName" placeholder="User name")
           .field
-              if formErrors
-                label(for="password" class="fnt--red") #{formErrors.get("password")}
+              if errors.formErrors
+                if errors.formErrors.get("password")
+                  label(for="password" class="fnt--red") #{errors.formErrors.get("password")}
               input(type="text" name="password" placeholder="Password")
           .field
-              if formErrors
-                label(for="email" class="fnt--red") #{formErrors.get("email")}
+              if errors.formErrors
+                if errors.formErrors.get("email")
+                  label(for="email" class="fnt--red") #{errors.formErrors.get("email")}
               input(type="text" name="email" placeholder="E-mail address")
           .field
-              if formErrors
-                label(for="first_name" class="fnt--red") #{formErrors.get("first_name")}
+              if errors.formErrors
+                if errors.formErrors.get("first_name")
+                  label(for="first_name" class="fnt--red") #{errors.formErrors.get("first_name")}
               input(type="text" name="first_name" placeholder="First name")
           .field
-              if formErrors
-                label(for="second_name" class="fnt--red") #{formErrors.get("second_name")}
+              if errors.formErrors
+                if errors.formErrors.get("second_name")
+                  label(for="second_name" class="fnt--red") #{errors.formErrors.get("second_name")}
               input(type="text" name="second_name" placeholder="Second name")
           .field
-              if formErrors
-                label(for="phone" class="fnt--red") #{formErrors.get("phone")}
+              if errors.formErrors
+                if errors.formErrors.get("phone")
+                  label(for="phone" class="fnt--red") #{errors.formErrors.get("phone")}
               input(type="tel" name="phone" placeholder="Phone Number")
           .field
-              if formErrors
-                label(for="img_profile" class="fnt--red") #{formErrors.get("img_profile")}
+              if errors.formErrors
+                if errors.formErrors.get("img_profile")
+                  label(for="img_profile" class="fnt--red") #{errors.formErrors.get("img_profile")}
               input(type="file" name="img_profile" placeholder="Profile Image")
           .field
-              if formErrors
-                label(for="zip_code" class="fnt--red") #{formErrors.get("zip_code")}
+              if errors.formErrors
+                if errors.formErrors.get("zip_code")
+                  label(for="zip_code" class="fnt--red") #{errors.formErrors.get("zip_code")}
               input(type="text" name="zip_code" placeholder="Zip code")
           div
             button(for="signForm" type="submit") Sign Up

@@ -3,6 +3,7 @@ import User from "./User";
 import UserParser from "./UserParser";
 import UserDao from "./UserDao";
 import handleImageUpload from "../formHelper/FileUpload";
+import FormErrors from "../system/errors/FormErrors";
 
 
 export default class UserController {
@@ -13,7 +14,7 @@ export default class UserController {
             let parser: UserParser = new UserParser();
 
             const errors = validator.isValidRegister(req);
-            if (errors.size > 0) {
+            if (errors.size()) {
                 return Promise.reject(errors);
             }
 
@@ -32,7 +33,7 @@ export default class UserController {
             }
 
         } catch (error) {
-            return Promise.reject(error);
+            return Promise.reject(error.toString());
         }
     }
 
@@ -42,24 +43,27 @@ export default class UserController {
             const userDao = new UserDao();
             const validator = new UserValidator();
             const parser: UserParser = new UserParser();
+            const formErrors: FormErrors = new FormErrors();
 
             const errors = validator.isValidLogin(req);
 
-            if (errors.size > 0) {
+            if (errors.size()) {
                 return Promise.reject(errors);
             }
 
             const result = await userDao.getUserByUsername(req.body.userName);
 
             if (result.length === 0) {
-                return Promise.reject((new Map()).set("userName", "Username not register"));
+                formErrors.forField("userName", "Username not register")
+                return Promise.reject(formErrors);
             }
             const user = parser.fromSqlResult(result);
 
             const isValidPassword = validator.isValidPassword(req.body.password, user);
 
             if (isValidPassword === false) {
-                return Promise.reject((new Map()).set("password", "Invalid password"));
+                formErrors.forField("password", "Invalid password")
+                return Promise.reject(formErrors);
             }
 
             if (!req.session) {
@@ -70,7 +74,7 @@ export default class UserController {
 
             return Promise.resolve(user);
         } catch (error) {
-            return Promise.reject(error);
+            return Promise.reject(error.toString());
         }
 
     }
@@ -79,10 +83,11 @@ export default class UserController {
         try {
             const userDao = new UserDao();
             const parser: UserParser = new UserParser();
+            const formErrors: FormErrors = new FormErrors();            
 
             const result = await userDao.getUserByEmail(res.email);
             if (result.length > 0) {
-                return Promise.reject((new Map()).set("userName", "This email is already register"));
+                return Promise.reject(formErrors.forField("userName", "This email is already register"));
             }
             const user = parser.fromFacebookResponse(res);
 
@@ -96,7 +101,7 @@ export default class UserController {
 
             return Promise.resolve(user);
         } catch (error) {
-            return Promise.reject(error);
+            return Promise.reject(error.toString());
         }
 
     }

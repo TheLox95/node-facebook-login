@@ -12,16 +12,21 @@ const express = require("express");
 const url_1 = require("url");
 const UserController_1 = require("../src/user/UserController");
 const fb_1 = require("fb");
+const FormErrors_1 = require("../src/system/errors/FormErrors");
 var app = require('../app');
 var router = express.Router();
 router.get('/', function (req, res, next) {
+    let data = { title: 'Loging', errors: { formErrors: undefined, systemErrors: undefined } };
     const formErrors = req.app.get('form_errors');
-    let data = { title: 'Loging' };
+    const systemErrors = req.app.get('system_errors');
     if (formErrors) {
-        data = { title: 'Loging', formErrors };
+        data = { title: 'Loging', errors: { formErrors, systemErrors } };
         req.app.set("form_errors", undefined);
     }
-    console.log(data);
+    if (systemErrors) {
+        data = { title: 'Loging', errors: { formErrors, systemErrors } };
+        req.app.set("system_errors", undefined);
+    }
     res.render('login', data);
 });
 router.get('/facebook', function (req, resExpress, next) {
@@ -44,11 +49,16 @@ router.get('/facebook', function (req, resExpress, next) {
     });
 });
 router.get('/singup', function (req, res, next) {
+    let data = { title: 'register', errors: { formErrors: undefined } };
     const formErrors = req.app.get('form_errors');
-    let data = { title: 'register' };
+    const systemErrors = req.app.get('system_errors');
     if (formErrors) {
-        data = { title: 'register', formErrors };
+        data = { title: 'register', errors: { formErrors, systemErrors } };
         req.app.set("form_errors", undefined);
+    }
+    if (systemErrors) {
+        data = { title: 'Loging', errors: { formErrors, systemErrors } };
+        req.app.set("system_errors", undefined);
     }
     res.render('register', data);
 });
@@ -64,8 +74,12 @@ router.post('/singup', function (req, res, next) {
             }));
         }
         catch (error) {
-            console.log(error);
-            req.app.set("form_errors", error);
+            if (error instanceof FormErrors_1.default) {
+                req.app.set("form_errors", error);
+            }
+            else {
+                req.app.set("system_errors", `Database error ${error}`);
+            }
             res.redirect("singup");
         }
     });
@@ -78,7 +92,12 @@ router.post('/singin', function (req, res, next) {
             res.redirect("/dashboard");
         }
         catch (error) {
-            req.app.set("form_errors", error);
+            if (error instanceof FormErrors_1.default) {
+                req.app.set("form_errors", error);
+            }
+            else {
+                req.app.set("system_errors", `Database error ${error}`);
+            }
             res.redirect("/login");
         }
     });

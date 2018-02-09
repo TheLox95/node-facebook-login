@@ -4,8 +4,8 @@ const mysql_1 = require("mysql");
 const credentials = require("./Credentials");
 class DB {
     executeQuery(query) {
-        this._openConnection();
         return new Promise((resolve, rejected) => {
+            this._openConnection().catch(rejected);
             this._connection.query(query, (error, results, fields) => {
                 if (error)
                     rejected(error);
@@ -21,7 +21,10 @@ class DB {
             password: credentials.password,
             database: credentials.database
         });
-        this._connection.connect();
+        return new Promise((resolve, rejected) => {
+            this._connection.connect(rejected);
+            resolve();
+        });
     }
     _closeConnetion() {
         this._connection.end();

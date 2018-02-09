@@ -12,6 +12,7 @@ const UserValidator_1 = require("./UserValidator");
 const UserParser_1 = require("./UserParser");
 const UserDao_1 = require("./UserDao");
 const FileUpload_1 = require("../formHelper/FileUpload");
+const FormErrors_1 = require("../system/errors/FormErrors");
 class UserController {
     static handleSignUpForm(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -19,7 +20,7 @@ class UserController {
                 let validator = new UserValidator_1.default();
                 let parser = new UserParser_1.default();
                 const errors = validator.isValidRegister(req);
-                if (errors.size > 0) {
+                if (errors.size()) {
                     return Promise.reject(errors);
                 }
                 const user = parser.fromFormBody(req.body);
@@ -32,7 +33,7 @@ class UserController {
                 }
             }
             catch (error) {
-                return Promise.reject(error);
+                return Promise.reject(error.toString());
             }
         });
     }
@@ -42,18 +43,21 @@ class UserController {
                 const userDao = new UserDao_1.default();
                 const validator = new UserValidator_1.default();
                 const parser = new UserParser_1.default();
+                const formErrors = new FormErrors_1.default();
                 const errors = validator.isValidLogin(req);
-                if (errors.size > 0) {
+                if (errors.size()) {
                     return Promise.reject(errors);
                 }
                 const result = yield userDao.getUserByUsername(req.body.userName);
                 if (result.length === 0) {
-                    return Promise.reject((new Map()).set("userName", "Username not register"));
+                    formErrors.forField("userName", "Username not register");
+                    return Promise.reject(formErrors);
                 }
                 const user = parser.fromSqlResult(result);
                 const isValidPassword = validator.isValidPassword(req.body.password, user);
                 if (isValidPassword === false) {
-                    return Promise.reject((new Map()).set("password", "Invalid password"));
+                    formErrors.forField("password", "Invalid password");
+                    return Promise.reject(formErrors);
                 }
                 if (!req.session) {
                     return Promise.reject(new Error("there is no session active"));
@@ -62,7 +66,7 @@ class UserController {
                 return Promise.resolve(user);
             }
             catch (error) {
-                return Promise.reject(error);
+                return Promise.reject(error.toString());
             }
         });
     }
@@ -71,9 +75,10 @@ class UserController {
             try {
                 const userDao = new UserDao_1.default();
                 const parser = new UserParser_1.default();
+                const formErrors = new FormErrors_1.default();
                 const result = yield userDao.getUserByEmail(res.email);
                 if (result.length > 0) {
-                    return Promise.reject((new Map()).set("userName", "This email is already register"));
+                    return Promise.reject(formErrors.forField("userName", "This email is already register"));
                 }
                 const user = parser.fromFacebookResponse(res);
                 userDao.saveUser(user);
@@ -84,7 +89,7 @@ class UserController {
                 return Promise.resolve(user);
             }
             catch (error) {
-                return Promise.reject(error);
+                return Promise.reject(error.toString());
             }
         });
     }
