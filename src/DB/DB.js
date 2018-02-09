@@ -19,7 +19,8 @@ class DB {
             host: credentials.host,
             user: credentials.user,
             password: credentials.password,
-            database: credentials.database
+            database: credentials.database,
+            port: credentials.port
         });
         return new Promise((resolve, rejected) => {
             this._connection.connect(rejected);
