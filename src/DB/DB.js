@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mysql_1 = require("mysql");
+const credentials = require("./Credentials");
 class DB {
     executeQuery(query) {
         this._openConnection();
@@ -15,10 +16,10 @@ class DB {
     }
     _openConnection() {
         this._connection = mysql_1.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: '',
-            database: 'system_db'
+            host: credentials.host,
+            user: credentials.user,
+            password: credentials.password,
+            database: credentials.database
         });
         this._connection.connect();
     }

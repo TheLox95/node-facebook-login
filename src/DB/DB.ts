@@ -1,4 +1,5 @@
 import {createConnection, Connection as MysqlConnection} from "mysql";
+const credentials = require("./Credentials");
 
 export default class DB{
 
@@ -17,10 +18,10 @@ export default class DB{
 
     private _openConnection(){     
         this._connection = createConnection({
-            host     : 'localhost',
-            user     : 'root',
-            password : '',
-            database : 'system_db'
+            host     : credentials.host,
+            user     : credentials.user,
+            password : credentials.password,
+            database : credentials.database
           });     
           this._connection.connect();
     }
