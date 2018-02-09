@@ -30,10 +30,10 @@ class UserDao {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 if (yield this._isUsernameUsed(user)) {
-                    return Promise.reject((new Map()).set("username", "This username is already on use"));
+                    return Promise.reject("This username is already on use");
                 }
                 if (yield this._isEmailUsed(user)) {
-                    return Promise.reject((new Map()).set("email", "This email is already on use"));
+                    return Promise.reject("This email is already on use");
                 }
                 let hashedPass = null;
                 const userPass = user.getPassword();

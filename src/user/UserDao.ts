@@ -22,11 +22,11 @@ export default class UserDao{
     async saveUser(user: User){
         try {
             if (await this._isUsernameUsed(user)) {
-                return Promise.reject((new Map()).set("username", "This username is already on use"));
+                return Promise.reject("This username is already on use");
             }
 
             if (await this._isEmailUsed(user)) {
-                return Promise.reject((new Map()).set("email", "This email is already on use"));
+                return Promise.reject("This email is already on use");
             }
 
             let hashedPass = null;
