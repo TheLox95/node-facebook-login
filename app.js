@@ -7,7 +7,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
-const passport_1 = require("passport");
 const session = require("express-session");
 var index = require('./routes/index');
 var login = require('./routes/login');
@@ -29,7 +28,7 @@ app.use(session({
     saveUninitialized: false
 }));
 app.use(fileUpload());
-app.use(passport_1.initialize());
+app.use(initialize());
 app.use(session());
 app.use('/', index);
 app.use('/login', login);

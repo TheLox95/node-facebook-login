@@ -5,7 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
-import {initialize, session as passportSession} from "passport";
 import * as session from "express-session";
 
 var index = require('./routes/index');
