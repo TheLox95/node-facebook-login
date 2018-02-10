@@ -21,33 +21,33 @@ block content
     a(href="login/singup") Sign Up
     a(href="#" class="p1 my1" onclick="facebookLogin()") Sign Up with Facebook
 
-    //- script.
-    //-   window.fbAsyncInit = function() {
-    //-     FB.init({
-    //-       appId      : '166652330630100',
-    //-       cookie     : true,
-    //-       xfbml      : true,
-    //-       version    : 'v2.9'
-    //-     });
+    script.
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '166652330630100',
+          cookie     : true,
+          xfbml      : true,
+          version    : 'v2.9'
+        });
           
-    //-     FB.AppEvents.logPageView();   
+        FB.AppEvents.logPageView();   
    
-    //-   };
+      };
 
-    //-   function facebookLogin(){
-    //-     FB.login(statusChangeCallback, {scope: 'public_profile,email'})
-    //-   }
+      function facebookLogin(){
+        FB.login(statusChangeCallback, {scope: 'public_profile,email'})
+      }
 
-    //-   function statusChangeCallback(response){
-    //-     if(response.status === "connected"){
-    //-       window.location.href = "http://localhost:3000/login/facebook?token=" + response.authResponse.accessToken;
-    //-     }
-    //-   }
+      function statusChangeCallback(response){
+        if(response.status === "connected"){
+          window.location.href = "http://localhost:3000/login/facebook?token=" + response.authResponse.accessToken;
+        }
+      }
 
-    //-   (function(d, s, id){
-    //-     var js, fjs = d.getElementsByTagName(s)[0];
-    //-     if (d.getElementById(id)) {return;}
-    //-     js = d.createElement(s); js.id = id;
-    //-     js.src = "https://connect.facebook.net/en_US/sdk.js";
-    //-     fjs.parentNode.insertBefore(js, fjs);
-    //-   }(document, 'script', 'facebook-jssdk'));
+      (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));

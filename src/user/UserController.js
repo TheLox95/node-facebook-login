@@ -78,7 +78,8 @@ class UserController {
                 const formErrors = new FormErrors_1.default();
                 const result = yield userDao.getUserByEmail(res.email);
                 if (result.length > 0) {
-                    return Promise.reject(formErrors.forField("userName", "This email is already register"));
+                    formErrors.forField("userName", "This email is already register");
+                    return Promise.reject(formErrors);
                 }
                 const user = parser.fromFacebookResponse(res);
                 userDao.saveUser(user);
