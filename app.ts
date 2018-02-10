@@ -30,7 +30,6 @@ app.use(session({
   saveUninitialized: false
 }));
 app.use(fileUpload());
-app.use(initialize());
 app.use(session());
 
 app.use('/', index);
